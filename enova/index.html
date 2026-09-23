@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>eNoVA-Nachrichtenmaske</title>
+<meta name="description" content="XJustiz-Nachrichten für den elektronischen Notar-Verwaltungs-Austausch (eNoVA) erfassen, gegen XJustiz 3.6.2 prüfen und als XML oder PDF ausgeben.">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="kopfzeile">
+  <div class="seite">
+    <div class="marke">
+      <svg class="siegel" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+        <circle cx="20" cy="20" r="18" fill="none" stroke="currentColor" stroke-width="1.6"/>
+        <circle cx="20" cy="20" r="14.5" fill="none" stroke="currentColor" stroke-width=".8" stroke-dasharray="1.6 1.9"/>
+        <text x="20" y="26.5" text-anchor="middle" font-size="17" font-family="Georgia, 'Times New Roman', serif" fill="currentColor">§</text>
+      </svg>
+      <div>
+        <h1>eNoVA-Nachrichtenmaske</h1>
+        <p>XJustiz <span id="xj-version">3.6.2</span> · Fachmodul DABAG · Nachrichten 2900003 und 2900004</p>
+      </div>
+    </div>
+    <div class="kopf-aktionen">
+      <button type="button" class="knopf" data-aktion="oeffnen" title="XJustiz-Nachricht (.xml), Entwurf (.json) oder Codeliste (Genericode) öffnen">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4.5V13h12V6H8L6.5 4.5H2z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        Datei öffnen
+      </button>
+      <label class="visuell-versteckt" for="beispiel-wahl">Beispiel laden</label>
+      <select id="beispiel-wahl" aria-label="Beispiel laden">
+        <option value="">Beispiel laden …</option>
+      </select>
+      <button type="button" class="knopf" data-aktion="neu">Neue Nachricht</button>
+      <label class="schalter" title="XML-Elementnamen unter den Feldern anzeigen">
+        <input type="checkbox" id="xml-namen" checked> XML-Namen
+      </label>
+    </div>
+  </div>
+</header>
+
+<div class="seite rahmen">
+  <nav class="navigation" aria-label="Abschnitte der Nachricht">
+    <ol id="navigation"></ol>
+  </nav>
+  <main class="inhalt" id="inhalt" aria-label="Nachricht erfassen">
+    <noscript><div class="banner warnung"><p>Diese Maske benötigt JavaScript. Die Daten verlassen den Rechner nicht – alles läuft lokal im Browser.</p></div></noscript>
+  </main>
+</div>
+
+<footer class="seite fussnote">
+  <p>Grundlage: XJustiz <strong>3.6.2</strong> (gültig bis 30.04.2027), Fachmodul DABAG, Schema <code>xjustiz_2900_dabag_3_2.xsd</code>, Nachrichten <code>nachricht.enova.entscheidung.2900003</code> und <code>nachricht.enova.mitteilung.2900004</code>. Die Schemadateien liegen unter <code>xsd/3.6.2/</code>.</p>
+  <p>Alle Eingaben bleiben im Browser. Es werden keine Daten übertragen; der Entwurf wird nur lokal in diesem Browser zwischengespeichert.</p>
+</footer>
+
+<div class="statusleiste" role="region" aria-label="Prüfstatus und Export">
+  <div class="seite">
+    <div class="status" id="status" aria-live="polite"><span class="punkt"></span><span id="status-text">Wird geprüft …</span></div>
+    <button type="button" class="knopf" data-aktion="pdf">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5h5.5L13 5v9.5H4z M9.5 1.5V5H13" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      PDF<span class="lang"> herunterladen</span>
+    </button>
+    <button type="button" class="knopf primaer" data-aktion="xml">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m0 0L4.8 6.8M8 10l3.2-3.2M2.5 12.5v1.5h11v-1.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      XML<span class="lang"> herunterladen</span>
+    </button>
+  </div>
+</div>
+
+<input type="file" id="datei-oeffnen" accept=".xml,.json,application/xml,text/xml,application/json" multiple hidden>
+<input type="file" id="datei-name" hidden>
+<div id="datenlisten" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<dialog id="bestaetigung" aria-labelledby="bestaetigung-titel">
+  <h2 id="bestaetigung-titel">Eingaben ersetzen?</h2>
+  <p id="bestaetigung-text"></p>
+  <div class="knopfreihe">
+    <button type="button" class="knopf" value="nein" data-dialog="nein">Abbrechen</button>
+    <button type="button" class="knopf primaer" value="ja" data-dialog="ja">Ersetzen</button>
+  </div>
+</dialog>
+
+<script src="vendor/jspdf.umd.min.js" defer></script>
+<script src="vendor/jspdf.plugin.autotable.min.js" defer></script>
+<script src="vendor/dejavu-sans-subset.js" defer></script>
+<script src="js/codelisten.js" defer></script>
+<script src="js/din91379.js" defer></script>
+<script src="js/xjustiz.js" defer></script>
+<script src="js/beispiele.js" defer></script>
+<script src="js/pdf.js" defer></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>
